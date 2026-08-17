@@ -12,7 +12,19 @@ func main() {
 		fmt.Println("Invalid directory path!")
 		return
 	}
-	fmt.Println(path)
+	validatedPath, err := ValidatePath(path)
+	if err != nil {
+		fmt.Println("Invalid Directory or directory does not exist!")
+		return
+	}
+	if validatedPath == true {
+		content, err := os.ReadDir(path)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		fmt.Println(content)
+	}
 }
 
 func Path() (string, error) {
@@ -39,3 +51,11 @@ func Path() (string, error) {
 	return path, nil
 }
 
+func ValidatePath(path string) (bool, error) {
+
+	_, err := os.Stat(path)
+	if err != nil {
+		return false, err
+	}
+	return true, nil
+}
