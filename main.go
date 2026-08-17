@@ -18,12 +18,14 @@ func main() {
 		return
 	}
 	if validatedPath == true {
-		content, err := os.ReadDir(path)
+		content, err := ReadDirectory(path)
 		if err != nil {
 			fmt.Println(err)
 			return
 		}
-		fmt.Println(content)
+		for _, value := range content {
+			fmt.Println(value)
+		}
 	}
 }
 
@@ -47,7 +49,6 @@ func Path() (string, error) {
 		path = inputPath[1]
 	}
 
-
 	return path, nil
 }
 
@@ -58,4 +59,18 @@ func ValidatePath(path string) (bool, error) {
 		return false, err
 	}
 	return true, nil
+}
+
+func ReadDirectory(path string) ([]os.DirEntry, error) {
+	content, err := os.ReadDir(path)
+	listOfContent := []os.DirEntry{}
+
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+	for _, value := range content {
+		listOfContent = append(listOfContent, value)
+	}
+	return listOfContent, nil
 }
